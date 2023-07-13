@@ -3,24 +3,43 @@ var apiKey = "8492c90f0c6c83c65898f20d685f7431";
 var city = document.getElementById('searchField');
 var searchBtn = document.getElementById('searchBtn');
 
-function singleDayForecast() {
-    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city.value.trim() + "&appid=" + apiKey;
-    fetch(queryURL)
+function getLatLong() {
+    var cityURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city.value.trim() + "&appid=" + apiKey;
+    fetch(cityURL)
         .then(function (response) {
         return response.json();
         })
         .then(function(data) {
-            console.log(data)
-            
-            // pull this data out and put it in the card! 
-        });
-};
-searchBtn.addEventListener('click', singleDayForecast);
+            console.log(data);
+            console.log(data.coord.lat);
+            var latitude = data.coord.lat;
+            console.log(data.coord.lon);
+            var longitude = data.coord.lon;
 
-// var for city to collect user's input from the form (id needed on the form)
-// var for the city name api URL with parameters q (for the city variable) and appid (for the api key)
-// example api call using city name -- api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
-// possible link -- var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+            // I know I need to get the above data 
+
+            singleDayURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=minutely,hourly,daily,alerts&appid=" + apiKey;
+            fetch(singleDayURL)
+                .then(function (response) {
+                return response.json();
+                })
+                .then(function(data) {
+                console.log(data);
+                });
+        
+            // weatherToday();
+            // pull this data out and put it in the card! 
+        }); 
+        
+};
+
+
+// function weatherToday() {
+//     var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city.value.trim() + "&appid=" + apiKey;
+// };
+
+searchBtn.addEventListener('click', getLatLong);
+
 
 
 // fetch function to get API
