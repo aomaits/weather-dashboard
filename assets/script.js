@@ -1,34 +1,49 @@
 
 var apiKey = "8492c90f0c6c83c65898f20d685f7431";
+var today = dayjs();
+
 var city = document.getElementById('searchField');
 var searchBtn = document.getElementById('searchBtn');
+var dailyIcon = document.getElementById('dailyIcon');
+var dailyTemp = document.getElementById('dailyTemp');
+var dailyWind = document.getElementById('dailyWind');
+var dailyHumidity = document.getElementById('dailyHumidity');
+var cityNameDate = document.getElementById('cityNameDate');
 
 function getLatLong() {
-    var cityURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city.value.trim() + "&appid=" + apiKey;
+    var cityURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city.value.trim() + "&units=imperial&appid=" + apiKey;
     fetch(cityURL)
         .then(function (response) {
         return response.json();
         })
         .then(function(data) {
             console.log(data);
-            console.log(data.coord.lat);
-            var latitude = data.coord.lat;
-            console.log(data.coord.lon);
-            var longitude = data.coord.lon;
+            cityNameDate.innerText = city.value + " " + today.format('dddd, MMMM D YYYY');
 
-            // I know I need to get the above data 
+            var latitude = data.coord.lat;
+            var longitude = data.coord.lon;
+            // Need to find the correct link to render this image! 
+            dailyIcon.src = "https://openweathermap.org/img/w" + data.weather[0].icon + ".png";
+            dailyTemp.innerText = "Temp: " + data.main.temp + " F";
+            dailyWind.innerText = "Wind: " + data.wind.speed + " MPH";
+            dailyHumidity.innerText = "Humidity: " + data.main.humidity + " %";
+
+            // Then append the below as the five day (I think data.weather[0].icon is the day's icon id)
             
-            var singleDayURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid" + apiKey;
-            fetch(singleDayURL)
+            var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&exclude=hourly,daily,alerts&&units=imperial&appid=" + apiKey;
+            fetch(fiveDayURL)
                 .then(function (response) {
                 return response.json();
                 })
                 .then(function(data) {
                 console.log(data);
+                // How to add the date up here? dayjs to add on one day per card...?
+                console.log("Temp: " + data.list[7].main.temp)
+                // each card- date, icon, temp, wind, humidity, 
                 });
-        
-            // weatherToday();
-            // pull this data out and put it in the card! 
+                
+                
+
         }); 
         
 };
@@ -46,18 +61,6 @@ searchBtn.addEventListener('click', getLatLong);
 // we'll need to get the cities first for lat and long
 
 // LOOKS LIKE THIS? 
-
-// function getApi(requestUrl) {
-//     fetch(requestUrl)
-//       .then(function (response) {
-//         console.log(response);
-//         if (response.status === 200) {
-//           responseText.textContent = response.status;
-//         }
-//         return response.json();
-//     });
-//   } 
-
 
 // click event listener search bar
 // function to save user search to local storage
