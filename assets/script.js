@@ -17,8 +17,8 @@ function getLatLong() {
             var longitude = data.coord.lon;
 
             // I know I need to get the above data 
-
-            singleDayURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=minutely,hourly,daily,alerts&appid=" + apiKey;
+            
+            var singleDayURL = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid" + apiKey;
             fetch(singleDayURL)
                 .then(function (response) {
                 return response.json();
