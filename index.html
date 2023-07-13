@@ -29,16 +29,19 @@
         </div>
       </nav>
 
-        <!-- Bootstrap search bar -->
-      <div class = "row">
-        <div class="col 2 input-group mb-3">
+        <!-- Bootstrap search bar (append city list here)-->
+      <div id="searchBox" >
+        <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text">Search for a city:</span>
+                <span class="input-group-text">Search for a city:</span>
             </div>
-            <input type="text" class="form-control" placeholder="city" aria-label="Username">
+            <!-- search field -->
+            <input id="searchField" name= "searchField" type="text" class="form-control" placeholder="city" aria-label="Username">
+            <!-- search button -->
+            <input id = "searchBtn" class="btn btn-primary" type="submit" value="Submit">
         </div>
 
-        <!-- City weather results -->
+        <!-- City weather results box (top right) -->
         <div class="col 10">
             <div class="card">
                 <div class="card-body">
@@ -52,14 +55,10 @@
         </div>
       </div>
 
-
-      <!-- search bar to the left, list below
-    Big bow top right -->
-
+      <!-- Five day forecast cards -->
       <div class="row justify-content-end">
         
             <div class="card row col-2 ">
-                <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Card title</h5>
                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -68,7 +67,6 @@
               </div>
         
               <div class="card row col-2">
-                <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Card title</h5>
                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -77,7 +75,6 @@
               </div>
         
               <div class="card row col-2">
-                <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Card title</h5>
                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -86,7 +83,6 @@
               </div>
         
               <div class="card row col-2">
-                <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Card title</h5>
                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -95,7 +91,6 @@
               </div>
         
               <div class="card row col-2">
-                <img src="..." class="card-img-top" alt="...">
                 <div class="card-body">
                   <h5 class="card-title">Card title</h5>
                   <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
@@ -110,6 +105,6 @@
     Two or three rows, the top row has the search bar and the card for the city (current day's weather)
     Below that and to the right is the 5 day forecast (5 cards)
     -->
-    <script src="/assets/script.js"> </script>
+    <script src="./assets/script.js"> </script>
 </body>
 </html>

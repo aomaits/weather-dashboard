@@ -1,9 +1,22 @@
 
-// var apiKey = "b10574b91dbcc89564ccb13283480293";
+var apiKey = "8492c90f0c6c83c65898f20d685f7431";
+var city = document.getElementById('searchField');
+var searchBtn = document.getElementById('searchBtn');
 
-console.log("connected");
+function singleDayForecast() {
+    var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city.value.trim() + "&appid=" + apiKey;
+    fetch(queryURL)
+        .then(function (response) {
+        return response.json();
+        })
+        .then(function(data) {
+            console.log(data)
+            
+            // pull this data out and put it in the card! 
+        });
+};
+searchBtn.addEventListener('click', singleDayForecast);
 
-// var for the apiKey
 // var for city to collect user's input from the form (id needed on the form)
 // var for the city name api URL with parameters q (for the city variable) and appid (for the api key)
 // example api call using city name -- api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
@@ -50,5 +63,4 @@ console.log("connected");
 // You will use localStorage to store any persistent data. For more information on how to work with the OpenWeather API, refer to the Full-Stack Blog on how to use API keys.
 
 
-// 
-https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
+// https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}
