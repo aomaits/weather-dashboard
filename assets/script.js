@@ -3,8 +3,11 @@ var apiKey = "8492c90f0c6c83c65898f20d685f7431";
 var today = dayjs();
 
 var searchedCities = [];
-var cityList = document.getElementById('cityList');
+// global variables to be reassigned within first search
+var latitude;
+var longitude;
 
+var cityList = document.getElementById('cityList');
 var city = document.getElementById('searchField');
 var searchBtn = document.getElementById('searchBtn');
 
@@ -52,6 +55,13 @@ function appendCitySearches () {
 
         var button = document.createElement("button");
         button.textContent = cities;
+        button. // YOU          WERE                 HERE  !!!!!!!!!!!!!!!!!!!!
+          //set attribute or something? to add the id using the current value of "i" (or its place in the array)
+        button.addEventListener("click", function(){ 
+            city = cities;
+            console.log(city);
+            // city will be defined as the most recent search- need logic to navigate the array based on the button clicked. BUT FIRST, have to dynamically create a class for all buttons, then
+        });
 
         li.appendChild(button);
         cityList.appendChild(li);
@@ -60,71 +70,74 @@ function appendCitySearches () {
         console.log(li);
         console.log(typeof li);
 
-        button.addEventListener("click", weatherAgain());
+        ;
     }
 };
 
-// Takes user's input and pulls the data for today's forecast
-function getLatLong() {
-    getCitySearches();
-    setCitySearches();
+// Takes user's input, pull data for today's forecast, add it to HTML
+function dailyWeatherSearch() {
     var cityURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city.value.trim() + "&units=imperial&appid=" + apiKey;
     fetch(cityURL)
         .then(function (response) {
         return response.json();
         })
         .then(function(data) {
-            console.log(data);
-            cityNameDate.innerText = city.value + " " + today.format('dddd, MMMM D YYYY');
+        cityNameDate.innerText = city.value + "  " + today.format('dddd, MMMM D, YYYY');
 
-            var latitude = data.coord.lat;
-            var longitude = data.coord.lon;
             // Need to find the correct link to render this image! 
             // dailyIcon.src = "https://openweathermap.org/img/w" + data.weather[0].icon + ".png";
 
-            dailyTemp.innerText = "Temp: " + data.main.temp + " F";
-            dailyWind.innerText = "Wind: " + data.wind.speed + " MPH";
-            dailyHumidity.innerText = "Humidity: " + data.main.humidity + " %";
-            
-            // Take the lat/long from the first fetch and uses that to pull the 5-day forecast
-            var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&exclude=hourly,daily,alerts&&units=imperial&appid=" + apiKey;
-            fetch(fiveDayURL)
-                .then(function (response) {
-                return response.json();
-                })
-                .then(function(data) {
+        dailyTemp.innerText = "Temp: " + data.main.temp + " F";
+        dailyWind.innerText = "Wind: " + data.wind.speed + " MPH";
+        dailyHumidity.innerText = "Humidity: " + data.main.humidity + " %";
 
-                dayOne.innerText = today.format('dddd, MMMM D, YYYY');
-                dayTwo.innerText = today.add(1, 'day').format('dddd, MMMM D, YYYY');
-                dayThree.innerText = today.add(2, 'day').format('dddd, MMMM D, YYYY');
-                dayFour.innerText = today.add(3, 'day').format('dddd, MMMM D, YYYY');
-                dayFive.innerText = today.add(4, 'day').format('dddd, MMMM D, YYYY');
+        latitude = data.coord.lat;
+        longitude = data.coord.lon;
+        
+        // Call five day weather search function from within this function in order to pass lat & lon variables
+        fiveDayWeatherSearch (latitude, longitude);
+        setCitySearches(city);
+        getCitySearches();
+        });
+};
 
-                // Five day cards still lack icon
-                dayOneTemp.innerText = "Temp: " + data.list[7].main.temp + " F";
-                dayOneWind.innerText = "Wind: " + data.list[7].wind.speed + " MPH";
-                dayOneHumidity.innerText = "Humidity: " + data.list[7].main.humidity + " %";
+function fiveDayWeatherSearch(){
+    // Take the lat/long from the first fetch and use that to pull the 5-day forecast
+    var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&exclude=hourly,daily,alerts&&units=imperial&appid=" + apiKey;
+    fetch(fiveDayURL)
+        .then(function (response) {
+        return response.json();
+        })
+        .then(function(data) {
 
-                dayTwoTemp.innerText = "Temp: " + data.list[15].main.temp + " F";
-                dayTwoWind.innerText = "Wind: " + data.list[15].wind.speed + " MPH";
-                dayTwoHumidity.innerText = "Humidity: " + data.list[15].main.humidity + " %";
+        dayOne.innerText = today.format('dddd, MMMM D, YYYY');
+        dayTwo.innerText = today.add(1, 'day').format('dddd, MMMM D, YYYY');
+        dayThree.innerText = today.add(2, 'day').format('dddd, MMMM D, YYYY');
+        dayFour.innerText = today.add(3, 'day').format('dddd, MMMM D, YYYY');
+        dayFive.innerText = today.add(4, 'day').format('dddd, MMMM D, YYYY');
 
-                dayThreeTemp.innerText = "Temp: " + data.list[23].main.temp + " F";
-                dayThreeWind.innerText = "Wind: " + data.list[23].wind.speed + " MPH";
-                dayThreeHumidity.innerText = "Humidity: " + data.list[23].main.humidity + " %";
+        // Five day cards still lack icon
+        dayOneTemp.innerText = "Temp: " + data.list[7].main.temp + " F";
+        dayOneWind.innerText = "Wind: " + data.list[7].wind.speed + " MPH";
+        dayOneHumidity.innerText = "Humidity: " + data.list[7].main.humidity + " %";
 
-                dayFourTemp.innerText = "Temp: " + data.list[31].main.temp + " F";
-                dayFourWind.innerText = "Wind: " + data.list[31].wind.speed + " MPH";
-                dayFourHumidity.innerText = "Humidity: " + data.list[31].main.humidity + " %";
+        dayTwoTemp.innerText = "Temp: " + data.list[15].main.temp + " F";
+        dayTwoWind.innerText = "Wind: " + data.list[15].wind.speed + " MPH";
+        dayTwoHumidity.innerText = "Humidity: " + data.list[15].main.humidity + " %";
 
-                dayFiveTemp.innerText = "Temp: " + data.list[39].main.temp + " F";
-                dayFiveWind.innerText = "Wind: " + data.list[39].wind.speed + " MPH";
-                dayFiveHumidity.innerText = "Humidity: " + data.list[39].main.humidity + " %";
+        dayThreeTemp.innerText = "Temp: " + data.list[23].main.temp + " F";
+        dayThreeWind.innerText = "Wind: " + data.list[23].wind.speed + " MPH";
+        dayThreeHumidity.innerText = "Humidity: " + data.list[23].main.humidity + " %";
 
-                console.log(data);
-                });
-        }); 
+        dayFourTemp.innerText = "Temp: " + data.list[31].main.temp + " F";
+        dayFourWind.innerText = "Wind: " + data.list[31].wind.speed + " MPH";
+        dayFourHumidity.innerText = "Humidity: " + data.list[31].main.humidity + " %";
 
+        dayFiveTemp.innerText = "Temp: " + data.list[39].main.temp + " F";
+        dayFiveWind.innerText = "Wind: " + data.list[39].wind.speed + " MPH";
+        dayFiveHumidity.innerText = "Humidity: " + data.list[39].main.humidity + " %";
+        });
+};
 
 function setCitySearches () {
     searchedCities.push(city.value.trim());
@@ -137,16 +150,9 @@ function getCitySearches () {
     var storedCities = JSON.parse(localStorage.getItem("City"))
     console.log(storedCities);
     console.log(typeof storedCities);
-
-        storedCities = searchedCities;
+    storedCities = searchedCities;
+    console.log("getCitySearches is running");
+    appendCitySearches();
     }
 
-appendCitySearches();
-};
-
-
-searchBtn.addEventListener('click', getLatLong);
-
-function weatherAgain() {
-    console.log("weather again works");
-};
+searchBtn.addEventListener('click', dailyWeatherSearch);
