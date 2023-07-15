@@ -2,6 +2,9 @@
 var apiKey = "8492c90f0c6c83c65898f20d685f7431";
 var today = dayjs();
 
+var searchedCities = [];
+var cityList = document.getElementById('cityList');
+
 var city = document.getElementById('searchField');
 var searchBtn = document.getElementById('searchBtn');
 
@@ -19,6 +22,7 @@ var dayThree = document.getElementById('dayThree');
 var dayFour = document.getElementById('dayFour');
 var dayFive = document.getElementById('dayFive');
 
+// Elements for the interior of the five day forecast cards
 var dayOneTemp = document.getElementById("dayOneTemp");
 var dayOneWind = document.getElementById("dayOneWind");
 var dayOneHumidity = document.getElementById("dayOneHumidity");
@@ -39,11 +43,31 @@ var dayFiveTemp = document.getElementById("dayFiveTemp");
 var dayFiveWind = document.getElementById("dayFiveWind");
 var dayFiveHumidity = document.getElementById("dayFiveHumidity");
 
+function appendCitySearches () {
+    cityList.innerText = "";
+    for (var i = 0; i < searchedCities.length; i++) {
+        var cities = searchedCities[i];
+        var li = document.createElement("li");
+        li.setAttribute("data-index", i);
 
+        var button = document.createElement("button");
+        button.textContent = cities;
 
+        li.appendChild(button);
+        cityList.appendChild(li);
+
+        console.log(searchedCities[i]);
+        console.log(li);
+        console.log(typeof li);
+
+        button.addEventListener("click", weatherAgain());
+    }
+};
 
 // Takes user's input and pulls the data for today's forecast
 function getLatLong() {
+    getCitySearches();
+    setCitySearches();
     var cityURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city.value.trim() + "&units=imperial&appid=" + apiKey;
     fetch(cityURL)
         .then(function (response) {
@@ -69,11 +93,6 @@ function getLatLong() {
                 return response.json();
                 })
                 .then(function(data) {
-                console.log("today= " + (today.format('dddd, MMMM D YYYY')));
-                console.log("tomorrow= " + today.add(1, 'day').format('dddd, MMMM D YYYY'));
-                console.log("day three= " + today.add(2, 'day').format('dddd, MMMM D YYYY'));
-                console.log("day four= " + today.add(3, 'day').format('dddd, MMMM D YYYY'));
-                console.log("day five= " + today.add(4, 'day').format('dddd, MMMM D YYYY'));
 
                 dayOne.innerText = today.format('dddd, MMMM D, YYYY');
                 dayTwo.innerText = today.add(1, 'day').format('dddd, MMMM D, YYYY');
@@ -81,6 +100,7 @@ function getLatLong() {
                 dayFour.innerText = today.add(3, 'day').format('dddd, MMMM D, YYYY');
                 dayFive.innerText = today.add(4, 'day').format('dddd, MMMM D, YYYY');
 
+                // Five day cards still lack icon
                 dayOneTemp.innerText = "Temp: " + data.list[7].main.temp + " F";
                 dayOneWind.innerText = "Wind: " + data.list[7].wind.speed + " MPH";
                 dayOneHumidity.innerText = "Humidity: " + data.list[7].main.humidity + " %";
@@ -102,17 +122,31 @@ function getLatLong() {
                 dayFiveHumidity.innerText = "Humidity: " + data.list[39].main.humidity + " %";
 
                 console.log(data);
-                // How to add the date up here? dayjs to add on one day per card...?
-                console.log("Temp: " + data.list[7].main.temp)
-                console.log("Wind: " + data.list[7].wind.speed)
-                console.log("Humidity: " + data.list[7].main.humidity)
-                // each card- date, icon, temp, wind, humidity, 
                 });
-                
-                
-
         }); 
-        
+
+
+function setCitySearches () {
+    searchedCities.push(city.value.trim());
+    localStorage.setItem("City", (JSON.stringify(searchedCities)));
+    console.log(searchedCities);
+    console.log(typeof searchedCities);
+}
+
+function getCitySearches () {
+    var storedCities = JSON.parse(localStorage.getItem("City"))
+    console.log(storedCities);
+    console.log(typeof storedCities);
+
+        storedCities = searchedCities;
+    }
+
+appendCitySearches();
 };
 
+
 searchBtn.addEventListener('click', getLatLong);
+
+function weatherAgain() {
+    console.log("weather again works");
+};
