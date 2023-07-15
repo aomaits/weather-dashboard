@@ -55,24 +55,42 @@ function appendCitySearches () {
 
         var button = document.createElement("button");
         button.textContent = cities;
-        button. // YOU          WERE                 HERE  !!!!!!!!!!!!!!!!!!!!
-          //set attribute or something? to add the id using the current value of "i" (or its place in the array)
-        button.addEventListener("click", function(){ 
-            city = cities;
-            console.log(city);
-            // city will be defined as the most recent search- need logic to navigate the array based on the button clicked. BUT FIRST, have to dynamically create a class for all buttons, then
-        });
+        button.setAttribute("id", ("button" + i));
+        button.addEventListener('click', weatherReRun);
 
+        // add event listener and then append it to the list 
         li.appendChild(button);
         cityList.appendChild(li);
 
-        console.log(searchedCities[i]);
-        console.log(li);
-        console.log(typeof li);
+            function weatherReRun () {
+                
+                console.log("rerun is running");
+                var cityURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cities + "&units=imperial&appid=" + apiKey;
+                fetch(cityURL)
+                    .then(function (response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                cityNameDate.innerText = cities + "  " + today.format('dddd, MMMM D, YYYY');
 
-        ;
-    }
+            // Need to find the correct link to render this image! 
+            // dailyIcon.src = "https://openweathermap.org/img/w" + data.weather[0].icon + ".png";
+
+                dailyTemp.innerText = "Temp: " + data.main.temp + " F";
+                dailyWind.innerText = "Wind: " + data.wind.speed + " MPH";
+                dailyHumidity.innerText = "Humidity: " + data.main.humidity + " %";
+
+                latitude = data.coord.lat;
+                longitude = data.coord.lon;
+        
+        // Call five day weather search function from within this function in order to pass lat & lon variables
+                fiveDayWeatherSearch (latitude, longitude);
+                });
+            };
+    };
 };
+
+
 
 // Takes user's input, pull data for today's forecast, add it to HTML
 function dailyWeatherSearch() {
@@ -110,6 +128,7 @@ function fiveDayWeatherSearch(){
         })
         .then(function(data) {
 
+        // SHOULD THESE ALL BE PLUS ONE DAY? 
         dayOne.innerText = today.format('dddd, MMMM D, YYYY');
         dayTwo.innerText = today.add(1, 'day').format('dddd, MMMM D, YYYY');
         dayThree.innerText = today.add(2, 'day').format('dddd, MMMM D, YYYY');
@@ -142,16 +161,11 @@ function fiveDayWeatherSearch(){
 function setCitySearches () {
     searchedCities.push(city.value.trim());
     localStorage.setItem("City", (JSON.stringify(searchedCities)));
-    console.log(searchedCities);
-    console.log(typeof searchedCities);
 }
 
 function getCitySearches () {
     var storedCities = JSON.parse(localStorage.getItem("City"))
-    console.log(storedCities);
-    console.log(typeof storedCities);
     storedCities = searchedCities;
-    console.log("getCitySearches is running");
     appendCitySearches();
     }
 
