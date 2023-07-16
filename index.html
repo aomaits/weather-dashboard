@@ -18,7 +18,7 @@
     <title>Weather Dashboard</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Weather Dashboard</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,10 +33,10 @@
       <div id="searchBox" >
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text">Search for a city:</span>
+                <span id="searchPre" class="input-group-text">Search for a city:</span>
             </div>
             <!-- search field -->
-            <input id="searchField" name= "searchField" type="text" class="form-control" placeholder="city" aria-label="Username">
+            <input id="searchField" name= "searchField" type="text" class="form-control" placeholder="city" > <!-- aria-label="Username"-->
             <!-- search button -->
             <input id = "searchBtn" class="btn btn-primary" type="submit" value="Submit">
         </div>
@@ -62,6 +62,7 @@
             <div class="card row col-2 ">
                 <div class="card-body">
                   <h5 id= "dayOne" class="card-title"></h5>
+                  <img id = "dayOneIcon" class="card-text"><img/>
                   <p id = "dayOneTemp" class="card-text"></p>
                   <p id = "dayOneWind" class="card-text"></p>
                   <p id = "dayOneHumidity" class="card-text"></p>
@@ -71,6 +72,7 @@
               <div class="card row col-2">
                 <div class="card-body">
                   <h5 id= "dayTwo" class="card-title"></h5>
+                  <img id = "dayTwoIcon" class="card-text"><img/>
                   <p id = "dayTwoTemp" class="card-text"></p>
                   <p id = "dayTwoWind" class="card-text"></p>
                   <p id = "dayTwoHumidity" class="card-text"></p>
@@ -80,6 +82,7 @@
               <div class="card row col-2">
                 <div class="card-body">
                   <h5 id= "dayThree" class="card-title"></h5>
+                  <img id = "dayThreeIcon" class="card-text"><img/>
                   <p id = "dayThreeTemp" class="card-text"></p>
                   <p id = "dayThreeWind" class="card-text"></p>
                   <p id = "dayThreeHumidity" class="card-text"></p>                
@@ -89,6 +92,7 @@
               <div class="card row col-2">
                 <div class="card-body">
                   <h5 id= "dayFour" class="card-title"></h5>
+                  <img id = "dayFourIcon" class="card-text"><img/>
                   <p id = "dayFourTemp" class="card-text"></p>
                   <p id = "dayFourWind" class="card-text"></p>
                   <p id = "dayFourHumidity" class="card-text"></p> 
@@ -98,6 +102,7 @@
               <div class="card row col-2">
                 <div class="card-body">
                   <h5 id= "dayFive" class="card-title"></h5>
+                  <img id = "dayFiveIcon" class="card-text"><img/>
                   <p id = "dayFiveTemp" class="card-text"></p>
                   <p id = "dayFiveWind" class="card-text"></p>
                   <p id = "dayFiveHumidity" class="card-text"></p> 
