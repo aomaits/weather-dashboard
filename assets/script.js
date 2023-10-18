@@ -109,9 +109,6 @@ function dailyWeatherSearch() {
         .then(function(data) {
         cityNameDate.innerText = city.value + "  " + today.format('dddd, MMMM D, YYYY');
 
-            // Need to find the correct link to render this image! 
-            // dailyIcon.src = "https://openweathermap.org/img/w" + data.weather[0].icon + ".png";
-
         dailyTemp.innerText = "Temp: " + data.main.temp + " F";
         dailyWind.innerText = "Wind: " + data.wind.speed + " MPH";
         dailyHumidity.innerText = "Humidity: " + data.main.humidity + " %";
@@ -149,7 +146,7 @@ function fiveDayWeatherSearch(){
         var iconThree = data.list[23].weather[0].icon;
         var iconFour = data.list[31].weather[0].icon;
         var iconFive = data.list[39].weather[0].icon;
-        // Five day cards still lack icon
+        
         dayOneIcon.src = "https://openweathermap.org/img/wn/" + iconOne + ".png";
         dayOneTemp.innerText = "Temp: " + data.list[7].main.temp + " F";
         dayOneWind.innerText = "Wind: " + data.list[7].wind.speed + " MPH";
